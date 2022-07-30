@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<h1>index.html</h1>
+<body>
+    <a th:href="@{/hello1}">测试多个 @RequestMapping() value</a> <br/>
+    <a th:href="@{/hello}">测试多个@RequestMapping() value</a>
+
+    <form method="get" action="/hello">
+        <input type="submit" value="测试@RequestMapping 注解的 method 属性"/>
+    </form>
+
+    <form th:href="@{/param/servletAPI}"  method=post>
+        用户名<input type="text" name="username"></intput><br/>
+        密码<input type="text" name="passward"></intput><br/>
+        提交<input type="submit" value="提交" /><br/>
+    </form>
+
+<a th:href="@{/test/mav}" >测试通过ModelAndView向请求域共享数据</a>
+</body>
+</html>
