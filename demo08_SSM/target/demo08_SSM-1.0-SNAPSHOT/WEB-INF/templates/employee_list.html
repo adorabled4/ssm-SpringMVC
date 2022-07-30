@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:v-on="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Employee list</title>
+</head>
+<script type="text/javascript" th:src="@{/static/script/vue.js}"></script>
+<script type="text/javascript">
+    var vue = new Vue({
+        "el":"#dataTable",
+        "methods":{
+            //event表示当前事件
+            deleteEmployee:function (event) {
+                //通过id获取表单标签
+                var delete_form = document.getElementById("delete_form");
+                //将触发事件的超链接的href属性为表单的action属性赋值
+                delete_form.action = event.target.href;
+                //提交表单
+                delete_form.submit();
+                //阻止超链接的默认跳转行为
+                event.preventDefault();
+            }
+        }
+    });
+</script>
+<div id="dataTable">
+    <table border="1" cellpadding="0" cellspacing="0" style="text-align:center;">
+        <tr>
+            <th colspan="5">Employee Info</th>
+        </tr>
+        <tr>
+            <th>empId</th>
+            <th>empName</th>
+            <th>gender</th>
+            <th>age</th>
+
+            <th>options(<a th:href="@{/to/add}">add</a>)</th>
+        </tr>
+        <tr th:each="employee:${page.list}">
+            <td th:text="${employee.empId}"></td>
+            <td th:text="${employee.empName}"></td>
+            <td th:text="${employee.gender}"></td>
+            <td th:text="${employee.age}"></td>
+<!--            <td>-->
+<!--                <a onclick="deleteEmployee()" th:href="@{'/employee/'+${employee.id}}">delete</a>-->
+<!--                <a th:href="@{'/employee/'+${employee.id}}" >update</a>-->
+<!--            </td>-->
+        </tr>
+    </table>
+    <div>
+        <a th:if="${page.hasPreviousPage}" th:href="@{/Emp/page/1}">首页</a>
+        <a th:if="${page.hasPreviousPage}" th:href="@{'/Emp/page'+${page.prePage}}">上一页</a>
+        <span th:each="nowPage:${page.navigatepageNums}"> <!--显示导航页页码-->
+            <a th:if="${page.pageNum==nowPage}" style="color: red" th:href="@{'/Emp/page/'+ ${nowPage}}" th:text="${'['+nowPage+']'}">下一页</a>
+            <a th:if="${page.pageNum!=nowPage}" style="color: blueviolet" th:href="@{'/Emp/page/'+ ${nowPage}}" th:text="${nowPage}">下一页</a>
+        </span>
+        <a th:if="${page.hasNextPage}" th:href="@{'/Emp/page/'+ ${page.nextPage}}">下一页</a>
+        <a th:if="${page.hasNextPage}" th:href="@{'/Emp/page/'+ ${page.pages}}">末页</a>  <!--末页就是直接访问总页数-->
+    </div>
+    <form  method="post" id="delete_form">
+        <input type="hidden" name="_method" value="delete" >
+    </form>
+</div>
+</body>
+</html>
